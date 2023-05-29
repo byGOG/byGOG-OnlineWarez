@@ -5,24 +5,24 @@ TITLE %NAME%
 
 :menu
 cls
-echo =================================================================================================================
-echo                                                __          __________  ______
-echo                                               / /_  __  __/ ____/ __ \/ ____/
-echo                                              / __ \/ / / / / __/ / / / / __  
-echo                                             / /_/ / /_/ / /_/ / /_/ / /_/ /  
-echo                                            /_.___/\__, /\____/\____/\____/   
-echo                                                  /____/                      
-echo =================================================================================================================
-echo                                                     ONLINE WAREZ
-echo                                                     [sordum.net] 
-echo =================================================================================================================
+echo ========================================================================
+echo                       __          __________  ______
+echo                      / /_  __  __/ ____/ __ \/ ____/
+echo                     / __ \/ / / / / __/ / / / / __  
+echo                    / /_/ / /_/ / /_/ / /_/ / /_/ /  
+echo                   /_.___/\__, /\____/\____/\____/   
+echo                         /____/                      
+echo ========================================================================
+echo                             ONLINE WAREZ
+echo                            [sordum.net] 
+echo ========================================================================
 echo [ud] Disabling User Account Control   [ii] IDM-IAS   
 echo [da] Activating Desktop Icon          [vd] VMware-DVT
 echo [dr] Defender Remover                 [wd] WinRAR-DFoX    
-echo [dc] Defender Control                         
-echo                                                       [e] Exit 
+echo [dc] Defender Control                 [ma] Microsoft Activation Scripts        
+echo                             [e] Exit 
 
-echo =================================================================================================================
+echo ========================================================================
 set choices=
 set /p choices="Please select option:"
 
@@ -61,6 +61,10 @@ for %%o in (!options!) do (
 	if "%%o"=="dc" (
         echo Defender Control...
         curl -sL#o "%TEMP%\DefenderControl.cmd" "https://raw.githubusercontent.com/byGOG/byGOG-OnlineWarez/main/OnlineWarez/DefenderControl.cmd" && CALL %TEMP%\DefenderControl.cmd
+    )
+	if "%%o"=="ma" (
+        echo Microsoft Activation Scripts ...
+		POWERSHELL -Command "irm https://massgrave.dev/get | iex"
     )
 )
 
