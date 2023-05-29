@@ -19,7 +19,7 @@ echo ===========================================================================
 echo [ud] Disabling User Account Control   [ii] IDM-IAS   
 echo [da] Activating Desktop Icon          [vd] VMware-DVT
 echo [dr] Defender Remover                 [wd] WinRAR-DFoX    
-echo [dc] Defender Control                          
+echo [dc] Defender Control                         
 echo                                                       [e] Exit 
 
 echo =================================================================================================================
