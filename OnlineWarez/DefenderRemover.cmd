@@ -21,5 +21,3 @@ start /wait %SYSTEMDRIVE%\tools\DefenderRemover\%OUTPUT%
 
 ECHO Installation completed successfully! by GOG [sordum.net]
 ECHO -------------------------------------------------------------------------------------------------------
-
-TIMEOUT /T 10
