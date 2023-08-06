@@ -14,7 +14,7 @@ echo                   /_.___/\__, /\____/\____/\____/
 echo                         /____/                      
 echo ========================================================================
 echo                             ONLINE WAREZ
-echo                            [sordum.net] 
+echo                             [sordum.net] 
 echo ========================================================================
 echo [ud] Disabling User Account Control   [ii] IDM-IAS   
 echo [da] Activating Desktop Icon          [vd] VMware-DVT
