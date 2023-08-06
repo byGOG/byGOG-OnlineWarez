@@ -2,7 +2,7 @@
 SETLOCAL
 SET "OUTPUT=DefenderRemover.exe"
 SET "NAME=Defender Remover"
-TITLE %NAME% Warez Online
+TITLE %NAME% Online Installer
 
 SET "URL=https://github.com/jbara2002/windows-defender-remover/releases/latest/download/DefenderRemover.exe"
 
@@ -16,8 +16,8 @@ powershell Start-Process cmd -ArgumentList '/c powershell -Command "Add-MpPrefer
 ECHO Downloading %NAME%:
 curl -L#o %SYSTEMDRIVE%\tools\DefenderRemover\%OUTPUT% "%URL%"
 
-ECHO Starting %NAME%...
-start /wait %SYSTEMDRIVE%\tools\DefenderRemover\%OUTPUT%
+ECHO Creating a Defender Control shortcut on the desktop......
+powershell Start-Process cmd -ArgumentList '/c mklink "%PUBLIC%\Desktop\DefenderRemover.lnk" "%SYSTEMDRIVE%\tools\DefenderRemover\%OUTPUT%"' -WindowStyle Hidden -Verb RunAs -Wait
 
 ECHO Installation completed successfully! by GOG [sordum.net]
 ECHO -------------------------------------------------------------------------------------------------------
