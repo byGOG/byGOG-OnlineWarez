@@ -1,35 +1,41 @@
-@ECHO OFF
-SETLOCAL
-SET "NAME=Defender Control"
-TITLE %NAME% Online Installer
+# Script Başlangıcı
+$Name = "Defender Control"
+$Url = "https://github.com/byGOG/byGOG-OnlineWarez/raw/refs/heads/main/OnlineWarez/DefenderControl.rar"
+$ToolsPath = "$env:SYSTEMDRIVE\tools"
+$LocalRarFile = Join-Path -Path $ToolsPath -ChildPath "DefenderControl.rar"
+$UnrarPath = "$env:TEMP\unrarw64.exe"
+$UnrarExe = "$env:TEMP\UnRAR.exe"
 
-SET "URL=https://github.com/byGOG/byGOG-OnlineWarez/raw/refs/heads/main/OnlineWarez/DefenderControl.rar"
+# Bilgilendirme
+Write-Host "-------------------------------------------------------------------------------------------------------"
+Write-Host "Araçlar klasörü oluşturuluyor..."
+New-Item -Path $ToolsPath -ItemType Directory -Force | Out-Null
 
-ECHO -------------------------------------------------------------------------------------------------------
-ECHO Creating Tools folder...
-mkdir %SYSTEMDRIVE%\tools\
+Write-Host "Windows Defender hariç tutma listesine ekleniyor..."
+Start-Process powershell -ArgumentList "Add-MpPreference -ExclusionPath '$ToolsPath'" -Verb RunAs -Wait
 
-ECHO Adding Windows Defender to the exclusion list...
-powershell Start-Process cmd -ArgumentList '/c powershell -Command "Add-MpPreference -ExclusionPath "%SYSTEMDRIVE%\tools\"" ' -WindowStyle Hidden -Verb RunAs -Wait
+Write-Host "$Name indiriliyor..."
+Invoke-WebRequest -Uri $Url -OutFile $LocalRarFile
 
-ECHO Downloading %NAME%...
-curl -L#o %SYSTEMDRIVE%\tools\DefenderControl.rar "%URL%"
+Write-Host "UnRAR indiriliyor ve kuruluyor..."
+Invoke-WebRequest -Uri "https://www.rarlab.com/rar/unrarw64.exe" -OutFile $UnrarPath
+Start-Process -FilePath $UnrarPath -ArgumentList "/S", "/D=$env:TEMP" -Wait
 
-ECHO Downloading and installing UnRAR...
-curl -# -L -o "%TEMP%\unrarw64.exe" "https://www.rarlab.com/rar/unrarw64.exe"
-start /wait "" "%TEMP%\unrarw64.exe" /S /D%TEMP%
+Write-Host "DefenderControl.rar dosyası çıkarılıyor..."
+& $UnrarExe e -p"psordum" -y $LocalRarFile "$ToolsPath\DefenderControl\"
 
-ECHO Extracting DefenderControl.rar file...
-%TEMP%/unrar e -psordum -y "%SYSTEMDRIVE%\tools\DefenderControl.rar" "%SYSTEMDRIVE%\tools\DefenderControl\"
+Write-Host "Masaüstünde Defender Control kısayolu oluşturuluyor..."
+$ShortcutPath = "$env:PUBLIC\Desktop\DefenderControl.lnk"
+$TargetPath = "$ToolsPath\DefenderControl\dControl.exe"
+$WshShell = New-Object -ComObject WScript.Shell
+$Shortcut = $WshShell.CreateShortcut($ShortcutPath)
+$Shortcut.TargetPath = $TargetPath
+$Shortcut.Save()
 
-ECHO Creating a Defender Control shortcut on the desktop......
-powershell Start-Process cmd -ArgumentList '/c mklink "%PUBLIC%\Desktop\DefenderControl" "%SYSTEMDRIVE%\tools\DefenderControl\dControl.exe"' -WindowStyle Hidden -Verb RunAs -Wait
+Write-Host "Geçici dosyalar siliniyor..."
+Remove-Item -Path $LocalRarFile -Force
+Remove-Item -Path $UnrarPath -Force
+Remove-Item -Path $UnrarExe -Force
 
-ECHO Deleting temporary files...
-DEL /q "%SYSTEMDRIVE%\tools\DefenderControl.rar"
-DEL /q "%TEMP%\unrarw64.exe"
-DEL /q "%TEMP%\UnRAR.exe"
-DEL /q "%TEMP%\license.txt"
-
-ECHO Installation completed successfully! by GOG [sordum.net]
-ECHO -------------------------------------------------------------------------------------------------------
+Write-Host "Kurulum başarıyla tamamlandı! by GOG [sordum.net]"
+Write-Host "-------------------------------------------------------------------------------------------------------"
