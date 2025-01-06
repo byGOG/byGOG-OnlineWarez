@@ -1,3 +1,15 @@
+# Kayıt defteri anahtarlarını oluştur
+$paths = @(
+    "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel",
+    "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu"
+)
+
+foreach ($path in $paths) {
+    if (-not (Test-Path $path)) {
+        New-Item -Path $path -Force | Out-Null
+    }
+}
+
 # Masaüstü simgelerini etkinleştir
 Write-Host "Bilgisayar masaüstü simgesini etkinleştiriyor..."
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name "{20D04FE0-3AEA-1069-A2D8-08002B30309D}" -Value 0 -Type DWord -Force
