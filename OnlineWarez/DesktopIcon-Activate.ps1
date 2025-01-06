@@ -27,4 +27,5 @@ Write-Host "Denetim Masası masaüstü simgesini etkinleştiriyor..."
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" -Name "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}" -Value 0 -Type DWord -Force
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu" -Name "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}" -Value 0 -Type DWord -Force
 
-Write-Host "Masaüstü simgeleri başarıyla etkinleştirildi." -ForegroundColor Yellow
+Write-Host "Masaüstü simgeleri başarıyla etkinleştirildi." -ForegroundColor DarkYellow
+
