@@ -1,4 +1,4 @@
-# Script Başlangıcı
+﻿# Script Başlangıcı
 $Name = "Defender Control"
 $ToolsPath = "C:\tools"
 $Url = "https://github.com/byGOG/byGOG-OnlineWarez/raw/main/OnlineWarez/DefenderControl.rar"
