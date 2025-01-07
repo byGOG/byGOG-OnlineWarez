@@ -1,14 +1,11 @@
 # Script Başlangıcı
 $Name = "Defender Control"
-$TempPath = "$env:TEMP"
+$ToolsPath = "C:\tools"
 $Url = "https://github.com/byGOG/byGOG-OnlineWarez/raw/refs/heads/main/OnlineWarez/DefenderControl.rar"
-$LocalRarFile = Join-Path -Path $TempPath -ChildPath "DefenderControl.rar"
-$UnrarPath = Join-Path -Path $TempPath -ChildPath "unrarw64.exe"
-$ToolsPath = "$env:SYSTEMDRIVE\tools"
-
-# Geçici dizine geçiş
-Write-Host "Geçici klasöre geçiliyor: $TempPath" -ForegroundColor Yellow
-Set-Location -Path $TempPath
+$LocalRarFile = Join-Path -Path $ToolsPath -ChildPath "DefenderControl.rar"
+$UnrarPath = Join-Path -Path $ToolsPath -ChildPath "unrarw64.exe"
+$UnrarExe = Join-Path -Path $ToolsPath -ChildPath "UnRAR.exe"
+$LicenseFile = Join-Path -Path $ToolsPath -ChildPath "license.txt"
 
 # Araçlar klasörü oluşturuluyor
 Write-Host "Araçlar klasörü oluşturuluyor: $ToolsPath" -ForegroundColor Yellow
@@ -18,12 +15,8 @@ if (-not (Test-Path $ToolsPath)) {
 
 # Windows Defender hariç tutma listesine ekleniyor
 Write-Host "Windows Defender hariç tutma listesine ekleniyor..." -ForegroundColor Yellow
-Try {
-    Add-MpPreference -ExclusionPath $ToolsPath
-    Write-Host "Windows Defender hariç tutma işlemi tamamlandı." -ForegroundColor Green
-} Catch {
-    Write-Host "Windows Defender hariç tutma işlemi başarısız oldu. Yönetici olarak çalıştırmanız gerekebilir!" -ForegroundColor Red
-}
+$cmdArguments = '/c powershell -Command "Add-MpPreference -ExclusionPath \"' + $ToolsPath + '\""'
+Start-Process cmd -ArgumentList $cmdArguments -WindowStyle Hidden -Verb RunAs -Wait
 
 # Defender Control indiriliyor
 Write-Host "$Name indiriliyor..." -ForegroundColor Yellow
@@ -32,16 +25,17 @@ Invoke-WebRequest -Uri $Url -OutFile $LocalRarFile -ErrorAction Stop
 # UnRAR indiriliyor ve kuruluyor
 Write-Host "UnRAR indiriliyor..." -ForegroundColor Yellow
 Invoke-WebRequest -Uri "https://www.rarlab.com/rar/unrarw64.exe" -OutFile $UnrarPath -ErrorAction Stop
-& $UnrarPath "/S" "/D$TempPath"
+Start-Process -FilePath $UnrarPath -ArgumentList "/S", "/D$ToolsPath" -Wait
 
 # RAR dosyasını çıkarma işlemi
 Write-Host "DefenderControl.rar dosyası çıkarılıyor..." -ForegroundColor Yellow
-$UnrarExe = Join-Path -Path $TempPath -ChildPath "UnRAR.exe"
-& $UnrarExe e -p"psordum" -y $LocalRarFile "$ToolsPath\DefenderControl\"
+& $UnrarExe e -p"sordum" -y $LocalRarFile "$ToolsPath\DefenderControl\"
 
-# Masaüstünde kısayol oluşturuluyor
+# Kullanıcının masaüstü yolunu al
+$UserDesktop = [System.Environment]::GetFolderPath('Desktop')
+$ShortcutPath = Join-Path -Path $UserDesktop -ChildPath "Defender Control.lnk"
+
 Write-Host "Masaüstünde kısayol oluşturuluyor..." -ForegroundColor Yellow
-$ShortcutPath = "$env:PUBLIC\Desktop\DefenderControl.lnk"
 $TargetPath = "$ToolsPath\DefenderControl\dControl.exe"
 $WshShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WshShell.CreateShortcut($ShortcutPath)
@@ -53,6 +47,7 @@ Write-Host "Geçici dosyalar temizleniyor..." -ForegroundColor Yellow
 Remove-Item -Path $LocalRarFile -Force
 Remove-Item -Path $UnrarPath -Force
 Remove-Item -Path $UnrarExe -Force
+Remove-Item -Path $LicenseFile -Force
 
 # Kurulum tamamlandı
 Write-Host "Kurulum başarıyla tamamlandı! by GOG [sordum.net]" -ForegroundColor Green
