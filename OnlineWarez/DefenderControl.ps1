@@ -1,11 +1,10 @@
 # Script Başlangıcı
 $Name = "Defender Control"
-$TempPath = "$env:TEMP\DefenderControlSetup"
-$ToolsPath = "$env:SYSTEMDRIVE\tools"
+$TempPath = "$env:TEMP"
 $Url = "https://github.com/byGOG/byGOG-OnlineWarez/raw/refs/heads/main/OnlineWarez/DefenderControl.rar"
 $LocalRarFile = Join-Path -Path $TempPath -ChildPath "DefenderControl.rar"
 $UnrarPath = Join-Path -Path $TempPath -ChildPath "unrarw64.exe"
-$UnrarExe = Join-Path -Path $TempPath -ChildPath "UnRAR.exe"
+$ToolsPath = "$env:SYSTEMDRIVE\tools"
 
 # Yönetici kontrolü
 function Check-Admin {
@@ -16,14 +15,12 @@ function Check-Admin {
 }
 Check-Admin
 
-# Geçici klasör oluşturuluyor
-Write-Host "Geçici klasör oluşturuluyor..." -ForegroundColor Yellow
-if (-not (Test-Path $TempPath)) {
-    New-Item -Path $TempPath -ItemType Directory | Out-Null
-}
+# Geçici dizine geçiş
+Write-Host "Geçici klasöre geçiliyor: $TempPath" -ForegroundColor Yellow
+Set-Location -Path $TempPath
 
 # Araçlar klasörü oluşturuluyor
-Write-Host "Araçlar klasörü oluşturuluyor..." -ForegroundColor Yellow
+Write-Host "Araçlar klasörü oluşturuluyor: $ToolsPath" -ForegroundColor Yellow
 if (-not (Test-Path $ToolsPath)) {
     New-Item -Path $ToolsPath -ItemType Directory | Out-Null
 }
@@ -42,12 +39,13 @@ Write-Host "$Name indiriliyor..." -ForegroundColor Yellow
 Invoke-WebRequest -Uri $Url -OutFile $LocalRarFile -ErrorAction Stop
 
 # UnRAR indiriliyor ve kuruluyor
-Write-Host "UnRAR indiriliyor ve kuruluyor..." -ForegroundColor Yellow
+Write-Host "UnRAR indiriliyor..." -ForegroundColor Yellow
 Invoke-WebRequest -Uri "https://www.rarlab.com/rar/unrarw64.exe" -OutFile $UnrarPath -ErrorAction Stop
 & $UnrarPath "/S" "/D$TempPath"
 
-# DefenderControl.rar dosyası çıkarılıyor
+# RAR dosyasını çıkarma işlemi
 Write-Host "DefenderControl.rar dosyası çıkarılıyor..." -ForegroundColor Yellow
+$UnrarExe = Join-Path -Path $TempPath -ChildPath "UnRAR.exe"
 & $UnrarExe e -p"psordum" -y $LocalRarFile "$ToolsPath\DefenderControl\"
 
 # Masaüstünde kısayol oluşturuluyor
@@ -59,9 +57,11 @@ $Shortcut = $WshShell.CreateShortcut($ShortcutPath)
 $Shortcut.TargetPath = $TargetPath
 $Shortcut.Save()
 
-# Geçici dosyalar siliniyor
-Write-Host "Geçici dosyalar siliniyor..." -ForegroundColor Yellow
-Remove-Item -Path $TempPath -Recurse -Force
+# Geçici dosyalar temizleniyor
+Write-Host "Geçici dosyalar temizleniyor..." -ForegroundColor Yellow
+Remove-Item -Path $LocalRarFile -Force
+Remove-Item -Path $UnrarPath -Force
+Remove-Item -Path $UnrarExe -Force
 
-# Kurulum tamamlandı mesajı
+# Kurulum tamamlandı
 Write-Host "Kurulum başarıyla tamamlandı! by GOG [sordum.net]" -ForegroundColor Green
