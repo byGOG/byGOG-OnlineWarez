@@ -1,4 +1,4 @@
-﻿# Script Başlangıcı
+# Script Başlangıcı
 $Name = "Defender Control"
 $ToolsPath = "C:\tools"
 $Url = "https://github.com/byGOG/byGOG-OnlineWarez/raw/main/OnlineWarez/DefenderControl.rar"
@@ -34,7 +34,6 @@ Write-Host "DefenderControl.rar dosyası çıkarılıyor..." -ForegroundColor Ye
 # Kullanıcının masaüstü yolunu al
 $UserDesktop = [System.Environment]::GetFolderPath('Desktop')
 $ShortcutPath = Join-Path -Path $UserDesktop -ChildPath "Defender Control.lnk"
-
 Write-Host "Masaüstünde kısayol oluşturuluyor..." -ForegroundColor Yellow
 $TargetPath = "$ToolsPath\DefenderControl\dControl.exe"
 $WshShell = New-Object -ComObject WScript.Shell
