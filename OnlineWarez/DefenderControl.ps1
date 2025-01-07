@@ -50,3 +50,5 @@ Remove-Item -Path $LicenseFile -Force
 
 # Kurulum tamamlandı
 Write-Host "Kurulum başarıyla tamamlandı! by GOG [sordum.net]" -ForegroundColor Green
+
+
