@@ -6,15 +6,6 @@ $LocalRarFile = Join-Path -Path $TempPath -ChildPath "DefenderControl.rar"
 $UnrarPath = Join-Path -Path $TempPath -ChildPath "unrarw64.exe"
 $ToolsPath = "$env:SYSTEMDRIVE\tools"
 
-# Yönetici kontrolü
-function Check-Admin {
-    if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Host "Bu script, yönetici olarak çalıştırılmalıdır!" -ForegroundColor Red
-        exit
-    }
-}
-Check-Admin
-
 # Geçici dizine geçiş
 Write-Host "Geçici klasöre geçiliyor: $TempPath" -ForegroundColor Yellow
 Set-Location -Path $TempPath
@@ -29,9 +20,9 @@ if (-not (Test-Path $ToolsPath)) {
 Write-Host "Windows Defender hariç tutma listesine ekleniyor..." -ForegroundColor Yellow
 Try {
     Add-MpPreference -ExclusionPath $ToolsPath
+    Write-Host "Windows Defender hariç tutma işlemi tamamlandı." -ForegroundColor Green
 } Catch {
-    Write-Host "Windows Defender hariç tutma eklenemedi!" -ForegroundColor Red
-    exit
+    Write-Host "Windows Defender hariç tutma işlemi başarısız oldu. Yönetici olarak çalıştırmanız gerekebilir!" -ForegroundColor Red
 }
 
 # Defender Control indiriliyor
