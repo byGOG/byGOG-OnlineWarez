@@ -64,7 +64,7 @@ for %%o in (!options!) do (
     )
 	if "%%o"=="ma" (
         echo Microsoft Activation Scripts...
-		POWERSHELL -Command "irm https://get.activated.win | iex)"
+	POWERSHELL -Command "irm https://get.activated.win | iex"
     )
 )
 
