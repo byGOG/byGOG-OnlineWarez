@@ -21,7 +21,7 @@ Invoke-WebRequest -Uri $Url -OutFile $LocalRarFile
 # UnRAR indiriliyor ve kuruluyor
 Write-Host "UnRAR indiriliyor ve kuruluyor..." -ForegroundColor Yellow
 Invoke-WebRequest -Uri "https://www.rarlab.com/rar/unrarw64.exe" -OutFile $UnrarPath
-Start-Process -FilePath $UnrarPath -ArgumentList "/S", "/D%TEMP%" -Wait
+Start-Process -FilePath $UnrarPath -ArgumentList "/S", "/D$($env:TEMP)" -Wait
 
 # DefenderControl.rar dosyası çıkarılıyor
 Write-Host "DefenderControl.rar dosyası çıkarılıyor..." -ForegroundColor Yellow
