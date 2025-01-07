@@ -1,3 +1,3 @@
 # byGOG-OnlineWarez
 
-`curl -sL#o "%TEMP%\byGOG-OnlineWarez.cmd" "https://github.com/byGOG/byGOG-OnlineWarez/releases/download/setup/byGOG-OnlineWarez.cmd" && CALL %TEMP%\byGOG-OnlineWarez.cmd`
+`irm https://github.com/byGOG/byGOG-OnlineWarez/raw/main/byGOG-OnlineWarez.ps1 | iex`
